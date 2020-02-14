@@ -105,11 +105,11 @@ class Section {
 }
 
 class Gladiator {
-  positionX: number;
-  positionY: number;
-  health: number;
-  actionScores: number;
-  currentActionScores: number;
+  public positionX: number;
+  public positionY: number;
+  public health: number;
+  public actionScores: number;
+  public currentActionScores: number;
   constructor(positionX, positionY) {
     this.positionX = positionX;
     this.positionY = positionY;
@@ -188,9 +188,10 @@ class Gladiator {
         });
       }
     }
-    wayMap = wayMap.filter(coordinates => {
-      return wayLength - wayPossibility == coordinates.caseWayLength;
-    });
+    wayMap = wayMap.filter(
+      coordinates => wayLength - wayPossibility == coordinates.caseWayLength
+    );
+
     if (wayMap.length > 1) {
       wayMap.sort((firstEl, secondEl) => {
         firstEl.reliefLevel = arena
@@ -207,12 +208,10 @@ class Gladiator {
   }
 
   tryAtack(enemy, arena): void {
-    const x: number =
-      (this.positionX - enemy.positionX) * (this.positionX - enemy.positionX);
-    const y: number =
-      (this.positionY - enemy.positionY) * (this.positionY - enemy.positionY);
+    const x: number = (this.positionX - enemy.positionX) ** 2;
+    const y: number = (this.positionY - enemy.positionY) ** 2;
     if (x === 1 && y === 1 && this.currentActionScores > atack) {
-      let chanceOfSuccses = Math.random() * (120 - 0) + 0;
+      let chanceOfSuccses: number = Math.random() * 120;
       const reliefLevel: ReliefLevel =
         arena.map[this.positionX][this.positionY].getReliefLevel() -
         arena.map[enemy.positionX][enemy.positionY].getReliefLevel();
@@ -225,13 +224,13 @@ class Gladiator {
 }
 
 class Duel {
-  gladiators: Gladiator[];
-  arena: Arena;
+  public gladiators: Gladiator[];
+  public arena: Arena;
   constructor(gladiators, arena) {
     this.gladiators = gladiators;
     this.arena = arena;
   }
-  fight() {
+  fight(): void {
     while (this.gladiators[0].health > 0 && this.gladiators[1].health > 0) {
       this.gladiators[0].restoreCurrentActionScores();
       this.gladiators[1].restoreCurrentActionScores();
@@ -275,9 +274,9 @@ class Duel {
     }
   }
   showCurrentPositions() {
-    const map = this.arena.getMap();
-    const firstGladiator = this.gladiators[0];
-    const secondGladiator = this.gladiators[1];
+    const map: string[] = this.arena.getMap();
+    const firstGladiator: Gladiator = this.gladiators[0];
+    const secondGladiator: Gladiator = this.gladiators[1];
     let rowArray = map[firstGladiator.positionX].split("");
     rowArray[firstGladiator.positionY] = "*";
     let row = rowArray.join("");
